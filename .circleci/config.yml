@@ -40,7 +40,7 @@ jobs:
   deploy-job:
        docker:
          - image: circleci/node:10.14.2
-       working_directory: ~/firstapps/
+       working_directory: ~/firstapps/firstapps
        steps:
          - restore_cache:
              keys:
@@ -53,13 +53,13 @@ jobs:
              command: pwd
          - run:
              name: Install Firebase
-             command: npm install -g firebase-tools
+             command: npm install --save-dev firebase-tools
          - run:
              name: look in directory
              command: ls -ltr
          - run:
              name: Deploy main to Firebasee
-             command: yarn run firebase deploy --token=$FIREBASE_DEPLOY_TOKEN    
+             command: yarn run firebase deploy --token=$FIREBASE_DEPLOY_TOKEN --non-interactive
 
 workflows:
   version: 2.1
