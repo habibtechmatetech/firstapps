@@ -23,7 +23,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - V1-dependencies-   
 
-      - run: npm install
+      #- run: npm install
       
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
