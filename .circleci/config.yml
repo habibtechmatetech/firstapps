@@ -29,9 +29,9 @@ jobs:
             - ~/.cache/yarn
 
       - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: yarn-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
-            - node_modules
+            - ~/.cache/yarn
  # run tests!
       - run: yarn run test 
 
@@ -40,14 +40,14 @@ jobs:
   deploy-job:
        docker:
          - image: circleci/node:10.14.2
-       working_directory: ~/firstapps/firstapps
+       working_directory: ~/firstapps
        steps:
          - restore_cache:
              keys:
               - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-         #- save_cache:
-            # key: 
-             # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
+         #- restore_cache:
+           #  key: 
+             # - v1-node-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
          - run:
              name: show directory 
              command: pwd
