@@ -10,7 +10,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/firstapps/
+    working_directory: ~/firstapps
     steps:
       - checkout
 
@@ -34,16 +34,14 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
- # run tests!
+ 
       - run: yarn run test 
+      - run: yarn react-native start
+      # for build android
+      - run: yarn android
 
-      #- run: yarn add react-scripts --save
-
-      - run: yarn run build
 
   deploy-job:
-       docker:
-         - image: circleci/node:10.14.2
        #working_directory: ~/firstapps
        steps:
          - restore_cache:
@@ -58,14 +56,11 @@ jobs:
              name: show directory 
              command: pwd
          - run:
-             name: Install Firebase
-             command: npm install --save-dev firebase-tools
+             name: send apk
+             command: firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements"
          - run:
              name: look in directory
              command: ls -ltr
-         - run:
-             name: Deploy main to Firebasee
-             command: yarn run firebase deploy --token=$FIREBASE_DEPLOY_TOKEN 
 
 workflows:
   version: 2.1
