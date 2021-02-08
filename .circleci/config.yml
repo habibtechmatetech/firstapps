@@ -35,9 +35,8 @@ jobs:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
-
-      # run tests!
-      #- run: yarn run test:unit 
+ # run tests!
+      - run: yarn run test 
 
   deploy-job:
        docker:
