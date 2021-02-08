@@ -37,6 +37,8 @@ jobs:
  # run tests!
       - run: yarn run test 
 
+      - run: yarn install react-scripts --save
+
       - run: yarn run build
 
   deploy-job:
