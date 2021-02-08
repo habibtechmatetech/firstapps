@@ -1,9 +1,8 @@
 version: 2.1
 jobs:
   build-job:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:10.14.2
+    machine:
+      image: android:202102-01
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -40,6 +39,15 @@ jobs:
       #- run: yarn react-native start
       # for android build apk
       - run: yarn android
+      - run:
+          name: Launch emulator
+          command: |
+            emulator -avd test -delay-adb -verbose -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          background: true
+      - run:
+          name: Wait for emulator to start
+          command: |
+            circle-android wait-for-boot
 
 
   deploy-job:
