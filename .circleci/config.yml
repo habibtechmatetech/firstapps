@@ -23,7 +23,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
             - V1-dependencies-   
 
-      - run: yarn install
+      - run: npm install
       
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -45,11 +45,11 @@ jobs:
           name: Run Tests
           command: ./gradlew :demo:connectedAndroidTest
  
-      - run: yarn run test 
+      - run: npm run test 
       # for react native start
       #- run: yarn react-native start
       # for android build apk
-      - run: yarn android
+      - run: npm android
       
 
 
