@@ -23,9 +23,6 @@ jobs:
 
       - run: yarn install
       
-      
-      
-
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
           paths:
@@ -44,11 +41,11 @@ jobs:
        working_directory: ~/firstapps
        steps:
          - restore_cache:
-             keys:
-              - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
-         - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}
-
+             key:
+              - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+         - save_cache:
+             key: 
+              - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
          - run:
              name: show directory 
              command: pwd
