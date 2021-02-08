@@ -43,9 +43,9 @@ jobs:
          - restore_cache:
              key:
               - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-         - save_cache:
-             key: 
-              - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
+         #- save_cache:
+            # key: 
+             # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
          - run:
              name: show directory 
              command: pwd
