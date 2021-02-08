@@ -19,7 +19,9 @@ jobs:
           key: yarn-v1-{{ checksum "yarn.lock" }}
 
       - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}
+          keys: 
+            - v1-dependencies-{{ checksum "package.json" }}
+            - V1-dependencies-   
 
       - run: yarn install
       
@@ -29,9 +31,9 @@ jobs:
             - ~/.cache/yarn
 
       - save_cache:
-          key: yarn-v1-{{ checksum "package.json" }}-{{ arch }}
+          key: v1-dependencies-{{ checksum "package.json" }}-{{ arch }}
           paths:
-            - ~/.cache/yarn
+            - node_modules
  # run tests!
       - run: yarn run test 
 
@@ -40,14 +42,14 @@ jobs:
   deploy-job:
        docker:
          - image: circleci/node:10.14.2
-       working_directory: ~/.
+       working_directory: ~/firstapps
        steps:
          - restore_cache:
              keys:
               - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-         #- restore_cache:
-           #  key: 
-             # - v1-node-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
+         #- save_cache:
+            # key: 
+             # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
          - run:
              name: show directory 
              command: pwd
@@ -59,7 +61,7 @@ jobs:
              command: ls -ltr
          - run:
              name: Deploy main to Firebasee
-             command: yarn run firebase deploy --token=$FIREBASE_DEPLOY_TOKEN --non-interactive
+             command: yarn run firebase-deploy --token=$FIREBASE_DEPLOY_TOKEN --non-interactive
 
 workflows:
   version: 2.1
