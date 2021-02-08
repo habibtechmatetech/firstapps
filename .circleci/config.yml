@@ -10,7 +10,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
 
-    working_directory: ~/firstapps
+    working_directory: ~/firstapps/
     steps:
       - checkout
 
@@ -36,30 +36,28 @@ jobs:
             - node_modules
  
       - run: yarn run test 
+      # for react native start
       - run: yarn react-native start
-      # for build android
-      - run: yarn android
+      # for android build apk
+      - run: yarn build
+
 
   deploy-job:
+       docker:
+         - image: circleci/node:10.14.2
        #working_directory: ~/firstapps
-      steps:
-       - restore_cache:
-           keys:
-             - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+       steps:
+         - restore_cache:
+             keys:
+              - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
          #- save_cache:
             # key: 
              # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
          
 
-       - run:
-           name: show directory 
-           command: pwd
-       - run:
-           name: send apk
-           command: firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements"
-       - run:
-           name: look in directory
-           command: ls -ltr
+         - run:
+             name: deply apk to firebase 
+             command:  firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements"
 
 workflows:
   version: 2.1
