@@ -34,6 +34,34 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
+    description: Installs and starts an Android emulator with the given version and name.
+    parameters:
+      build_tools_version:
+        default: 28.0.3
+        description: The version of the Android build tools to install.
+        type: string
+    device_name:
+      default: TestingAVD
+      description: abd
+    steps:
+      - run:
+      command: >
+        yes | sdkmanager "platform-tools" "tools" >/dev/null
+
+        yes | sdkmanager "platforms;<<parameters.platform_version>>"
+        "system-images;<<parameters.platform_version>>;default;x86_64"
+        >/dev/null
+
+        yes | sdkmanager "emulator" --channel=3 >/dev/null
+
+        yes | sdkmanager "build-tools;<<parameters.build_tools_version>>"
+        >/dev/null
+
+        yes | sdkmanager --licenses >/dev/null
+
+        yes | sdkmanager --list
+      name: Install Android Emulator
+      shell: /bin/bash -e
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-22;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-22;default;armeabi-v7a"
