@@ -37,7 +37,7 @@ jobs:
  # run tests!
       - run: yarn run test 
 
-      - run: yarn add react-scripts --save
+      #- run: yarn add react-scripts --save
 
       - run: yarn run build
 
