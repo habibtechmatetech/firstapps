@@ -50,6 +50,8 @@ jobs:
          #- save_cache:
             # key: 
              # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
+         - run: yarn run build
+         
          - run:
              name: show directory 
              command: pwd
@@ -61,7 +63,7 @@ jobs:
              command: ls -ltr
          - run:
              name: Deploy main to Firebasee
-             command: yarn run firebase deploy --token=$FIREBASE_DEPLOY_TOKEN --non-interactive
+             command: yarn run firebase deploy --token=$FIREBASE_DEPLOY_TOKEN 
 
 workflows:
   version: 2.1
