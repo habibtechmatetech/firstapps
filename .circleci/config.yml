@@ -34,12 +34,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
- 
-      - run: yarn run test 
-      # for react native start
-      #- run: yarn react-native start
-      # for android build apk
-      - run: yarn android
       - run:
           name: Launch emulator
           command: |
@@ -49,6 +43,13 @@ jobs:
           name: Wait for emulator to start
           command: |
             circle-android wait-for-boot
+ 
+      - run: yarn run test 
+      # for react native start
+      #- run: yarn react-native start
+      # for android build apk
+      - run: yarn android
+      
 
 
   deploy-job:
