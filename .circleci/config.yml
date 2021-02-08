@@ -41,7 +41,7 @@ jobs:
        working_directory: ~/firstapps
        steps:
          - restore_cache:
-             key:
+             keys:
               - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
          #- save_cache:
             # key: 
