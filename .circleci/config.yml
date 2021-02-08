@@ -40,7 +40,7 @@ jobs:
   deploy-job:
        docker:
          - image: circleci/node:10.14.2
-       working_directory: ~/firstapps
+       working_directory: ~/.
        steps:
          - restore_cache:
              keys:
