@@ -37,7 +37,7 @@ jobs:
  # run tests!
       - run: yarn run test 
 
-      #- run: yarn build
+      - run: yarn run build
 
   deploy-job:
        docker:
@@ -50,8 +50,8 @@ jobs:
          #- save_cache:
             # key: 
              # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
-         - run: yarn run build
          
+
          - run:
              name: show directory 
              command: pwd
