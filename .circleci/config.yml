@@ -35,7 +35,7 @@ jobs:
  # run tests!
       - run: yarn run test 
 
-      - run: yarn build
+      #- run: yarn build
 
   deploy-job:
        docker:
