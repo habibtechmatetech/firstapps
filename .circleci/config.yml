@@ -45,21 +45,21 @@ jobs:
       description: abd
     steps:
       - run:
-      command: >
-        yes | sdkmanager "platform-tools" "tools" >/dev/null
+          command: >
+            yes | sdkmanager "platform-tools" "tools" >/dev/null
 
-        yes | sdkmanager "platforms;<<parameters.platform_version>>"
-        "system-images;<<parameters.platform_version>>;default;x86_64"
-        >/dev/null
+            yes | sdkmanager "platforms;<<parameters.platform_version>>"
+           "system-images;<<parameters.platform_version>>;default;x86_64"
+            >/dev/null
 
-        yes | sdkmanager "emulator" --channel=3 >/dev/null
+            yes | sdkmanager "emulator" --channel=3 >/dev/null
 
-        yes | sdkmanager "build-tools;<<parameters.build_tools_version>>"
-        >/dev/null
+            yes | sdkmanager "build-tools;<<parameters.build_tools_version>>"
+            >/dev/null
 
-        yes | sdkmanager --licenses >/dev/null
+            yes | sdkmanager --licenses >/dev/null
 
-        yes | sdkmanager --list
+            yes | sdkmanager --list
       name: Install Android Emulator
       shell: /bin/bash -e
       - run:
