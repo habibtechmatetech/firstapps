@@ -39,7 +39,7 @@ jobs:
       # for react native start
       #- run: yarn react-native start
       # for android build apk
-      - run: yarn build
+      - run: yarn android
 
 
   deploy-job:
