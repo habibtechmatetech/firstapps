@@ -41,11 +41,14 @@ jobs:
   deploy-job:
        docker:
          - image: circleci/node:10.14.2
-       # working_directory: ~/
+       working_directory: ~/firstapps
        steps:
          - restore_cache:
              keys:
               - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
+         - restore_cache:
+          key: node-v1-{{ checksum "package.json" }}
+
          - run:
              name: show directory 
              command: pwd
