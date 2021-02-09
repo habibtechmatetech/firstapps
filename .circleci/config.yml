@@ -83,10 +83,7 @@ jobs:
 
       - run:
           name: firebase login
-          command: firebase login
-          auth:
-          username: habib@techmatetech.com
-          password: $PASS
+          command: firebase login --token $FIREBASE_DEPLOY_TOKEN
 
       - run:
           name: deply apk to firebase 
