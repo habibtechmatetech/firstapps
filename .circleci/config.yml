@@ -56,7 +56,7 @@ jobs:
 
 
   deploy-job:
-    working_directory: ~/firstapps/android
+    working_directory: ~/firstapps
     docker:
       - image: circleci/android:api-29-node
        
