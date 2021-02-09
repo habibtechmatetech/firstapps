@@ -62,10 +62,10 @@ jobs:
        
     steps:
       - checkout:
-          path: ~/demo-react-native
+          path: ~/firstapps
 
       - attach_workspace:
-          at: ~/demo-react-native
+          at: ~/firstapps
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
