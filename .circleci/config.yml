@@ -82,7 +82,7 @@ jobs:
           command: curl -sL firebase.tools | bash
       - run: 
           name: firebase login --no-localhost
-          command: firebase login --no-localhost
+          command: firebase login --no-localhost Y
 
       
 
