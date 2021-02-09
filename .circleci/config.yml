@@ -53,12 +53,12 @@ jobs:
           path: test-results
 
       
-
-
+orbs:
+  deploygate: 'jmatsu-sandbox/deploygate-upload-app@dev:first'
   deploy-job:
-    working_directory: ~/firstapps/firstapps/
+    working_directory: ~/firstapps/
     docker:
-      - image: circleci/android:api-26-node
+      - image: circleci/android:api-28-alpha
        
     steps:
       - checkout:
@@ -76,19 +76,28 @@ jobs:
       - run:
           name: show directory 
           command: pwd
+
+      
           
       - run:
           name: Install Firebase
           command: curl -sL firebase.tools | bash
-      - run: 
-          name: firebase login --no-localhost
-          command: firebase login --no-localhost Y
+
+      - deploygate/upload-app:
+          api_key: $APP_ID
+          owner_name: habib@techmatetech.com
+          app_path: Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk
+          visibility: public
+
+      #- run: 
+       #   name: firebase login --no-localhost
+      #    command: firebase login --no-localhost Y 
 
       
 
-      - run:
-          name: deply apk to firebase 
-          command:  firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app=$APP_ID --release-notes "Bug fixes1 and improvements"
+     # - run:
+     #     name: deply apk to firebase 
+      #    command:  firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app=$APP_ID --release-notes "Bug fixes1 and improvements"
 
 workflows:
   version: 2.1
