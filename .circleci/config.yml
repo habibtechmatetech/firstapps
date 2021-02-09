@@ -58,7 +58,7 @@ jobs:
   deploy-job:
     working_directory: ~/firstapps/firstapps/
     docker:
-      - image: circleci/android:api-29-node
+      - image: circleci/android:api-26-node
        
     steps:
       - checkout:
@@ -76,13 +76,14 @@ jobs:
       - run:
           name: show directory 
           command: pwd
+          
       - run:
           name: Install Firebase
-          command: npm install --save-dev firebase-tools
+          command: curl -sL firebase.tools | bash
 
       - run:
           name: deply apk to firebase 
-          command:  firebase-appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements" --token=$FIREBASE_DEPLOY_TOKEN
+          command:  firebase deploy --firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements" --token=$FIREBASE_DEPLOY_TOKEN
 
 workflows:
   version: 2.1

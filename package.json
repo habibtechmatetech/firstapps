@@ -8,10 +8,11 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "deploy-firebase": "firebase deploy",
-    "firebase-appdistribution:distribute": "firebase appdistribution:distribute"
+    "deploy-firebase": "firebase deploy"
   },
   "dependencies": {
+    "bundle": "^2.1.0",
+    "install": "^0.13.0",
     "react": "16.13.1",
     "react-native": "0.63.4"
   },
