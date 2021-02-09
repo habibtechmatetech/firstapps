@@ -83,7 +83,7 @@ jobs:
 
       - run:
           name: deply apk to firebase 
-          command:  firebase deploy --firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements" --token=$FIREBASE_DEPLOY_TOKEN
+          command:  firebase deploy firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app 1:139719722795:android:30a6217b4724daec04676e --release-notes "Bug fixes1 and improvements" --token=$FIREBASE_DEPLOY_TOKEN
 
 workflows:
   version: 2.1
