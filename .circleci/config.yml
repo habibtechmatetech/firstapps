@@ -82,6 +82,13 @@ jobs:
           command: curl -sL firebase.tools | bash
 
       - run:
+          name: firebase login
+          command: firebase login
+          auth:
+          username: habib@techmatetech.com
+          password: $PASS
+
+      - run:
           name: deply apk to firebase 
           command:  firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app=$APP_ID --release-notes "Bug fixes1 and improvements"
 
