@@ -1,4 +1,9 @@
 apply plugin: "com.android.application"
+//...
+//apply the App Distribution Gradle plugin
+apply plugin: 'com.google.firebase.appdistribution'
+// ...
+
 
 import com.android.build.OutputFile
 
