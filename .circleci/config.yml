@@ -62,7 +62,7 @@ jobs:
        
     steps:
       - checkout:
-          path: ~/firstapps
+          path: ~/firstapps/android/app/build/
 
       - attach_workspace:
           at: ~/firstapps
