@@ -1,3 +1,5 @@
+orbs:
+  deploygate: 'jmatsu-sandbox/deploygate-upload-app@dev:first'
 version: 2.1
 jobs:
   build-job:
@@ -53,8 +55,7 @@ jobs:
           path: test-results
 
       
-orbs:
-  deploygate: 'jmatsu-sandbox/deploygate-upload-app@dev:first'
+
   deploy-job:
     working_directory: ~/firstapps/
     docker:
