@@ -111,7 +111,7 @@ jobs:
        #   path: output/scan
             
   android-build-and-test:
-    working_directory: ~/firstapps/android
+    working_directory: ~/firstapps/android/app
     docker:
       - image: circleci/android:api-29-node
     steps:
@@ -147,7 +147,7 @@ jobs:
 
       - store_artifacts:
           path: test-results
-          
+
       - run: 
           name: Build Debug APK
           command: ./gradlew bundleRelease
