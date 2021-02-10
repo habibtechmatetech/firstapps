@@ -125,6 +125,11 @@ jobs:
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+      - restore_cache:
+          key: jars-{{ checksum “build.gradle” }}-{{ checksum “app/build.gradle” }}
+      - run:
+          name: chmod permissions
+          command: chmod +x ./gradlew
       
 
       - run: bundle install
@@ -133,15 +138,11 @@ jobs:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
-      - restore_cache:
-          key: jars-{{ checksum “build.gradle” }}-{{ checksum “app/build.gradle” }}
-      - run:
-          name: chmod permissions
-          command: chmod +x ./gradlew
+      
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
-          
+
       - save_cache:
           paths:
             - ~/.gradle
@@ -158,6 +159,7 @@ jobs:
 
       - store_artifacts:
           path: test-results
+      - run: yarn install_ndk
 
       - run: 
           name: Build Debug APK
