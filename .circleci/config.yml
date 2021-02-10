@@ -121,7 +121,7 @@ jobs:
           path: ~/firstapps/android
 
       - attach_workspace:
-          at: ~/firstapps/android
+          at: ~/firstapps
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
