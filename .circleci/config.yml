@@ -119,6 +119,7 @@ jobs:
     steps:
       - checkout:
           path: ~/firstapps
+      - run: pwd
 
       - attach_workspace:
           at: ~/firstapps
