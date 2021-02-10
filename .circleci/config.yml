@@ -1,116 +1,16 @@
-version: 2.1
+version: 2
 jobs:
-  build-job:
+  build:
     docker:
-      # specify the version you desire here
-      - image: cimg/node:12.16
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/firstapps
+      - image: circleci/android:api-26-alpha
     steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}  
-
-      - run: yarn  install
-      
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
-      #- run: yarn run test
       - run:
-          name: jest tests
-          command: |
-            mkdir -p test-results/jest
-            yarn run test
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-      - persist_to_workspace:
-          root: ~/firstapps
-          paths:
-            - node_modules
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
-      
-      - run: avdmanager create avd -n Nexus_5X_API_26_x86 -k "system-images;android-26;default;x86" -d "Nexus 5X"
-      - run: osascript ./fastlane/recording_related/dismiss_warning.scpt # Dismisses the same named computer error
+          name: Setup emulator
+          command: sdkmanager "system-images;android-22;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-22;default;armeabi-v7a"
       - run:
-          name: Run emulator in background
-          command: /usr/local/share/android-sdk/tools/emulator @Nexus_5X_API_26_x86 -skin 1080x2066 -memory 2048 -noaudio
+          name: Launch emulator
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
           background: true
       - run:
           name: Run Tests
-          command: bundle exec fastlane ui_test
-          no_output_timeout: 30m
-
-      
-
-
-  deploy-job:
-    working_directory: ~/firstapps/firstapps/
-    docker:
-      - image: circleci/android:api-26-node
-       
-    steps:
-      - checkout:
-          path: ~/firstapps/
-
-      - attach_workspace:
-          at: ~/firstapps
-
-      - restore_cache:
-          keys:
-            - v1-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
-         #- save_cache:
-            # key: 
-             # - v1-storybook-dist-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }} 
-      - run:
-          name: show directory 
-          command: pwd
-          
-      - run:
-          name: Install Firebase
-          command: curl -sL firebase.tools | bash
-      - run: 
-          name: firebase login --no-localhost
-          command: firebase login --no-localhost
-
-      
-
-      - run:
-          name: deply apk to firebase 
-          command:  firebase appdistribution:distribute C:\Users\hp\Documents\firstapps\firstapps\android\app\build\outputs\apk\debug\app-debug.apk --app=$APP_ID --release-notes "Bug fixes1 and improvements"
-
-workflows:
-  version: 2.1
-
-  -deploy:
-    jobs:
-      - build-job
-      - deploy-job:
-          requires:
-            - build-job
-          filters:
-            branches:
-              only: main
-
+          command: ./gradlew :demo:connectedAndroidTest
