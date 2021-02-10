@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "bundle": "^2.1.0",
+    "fastlane": "^0.1.0",
     "install": "^0.13.0",
     "react": "16.13.1",
     "react-native": "0.63.4"
