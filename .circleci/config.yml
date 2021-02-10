@@ -130,6 +130,11 @@ jobs:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
+      - restore_cache:
+          key: jars-{{ checksum “build.gradle” }}-{{ checksum “app/build.gradle” }}
+      - run:
+          name: chmod permissions
+          command: chmod +x ./gradlew
 
       - run:
           name: fastlane tests
