@@ -147,6 +147,7 @@ jobs:
 
       - store_artifacts:
           path: test-results
+      - run: react-native run-android
 
 workflows:
   node-android:
