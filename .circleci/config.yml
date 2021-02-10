@@ -58,10 +58,10 @@ jobs:
           name: Run emulator in background
           command: /usr/local/share/android-sdk/tools/emulator @Nexus_5X_API_26_x86 -skin 1080x2066 -memory 2048 -noaudio
           background: true
-- run:
-    name: Run Tests
-    command: bundle exec fastlane ui_test
-    no_output_timeout: 30m
+      - run:
+          name: Run Tests
+          command: bundle exec fastlane ui_test
+          no_output_timeout: 30m
 
       
 
