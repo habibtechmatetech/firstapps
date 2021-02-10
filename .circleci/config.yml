@@ -135,7 +135,7 @@ jobs:
       - run:
           name: chmod permissions
           command: chmod +x ./gradlew
-
+      
       - run:
           name: fastlane tests
           command: |
@@ -147,10 +147,11 @@ jobs:
 
       - store_artifacts:
           path: test-results
+          
       - run: 
-          command: |
-            cd "/android"
-            ./gradlew bundleRelease
+          name: Build Debug APK
+          command: ./gradlew bundleRelease
+      
 
 workflows:
   node-android:
