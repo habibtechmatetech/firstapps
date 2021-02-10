@@ -118,7 +118,7 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout:
-          path: ~/firstapps/android
+          path: ~/firstapps
 
       - attach_workspace:
           at: ~/firstapps
