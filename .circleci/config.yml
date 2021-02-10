@@ -160,7 +160,7 @@ jobs:
 
       - store_artifacts:
           path: test-results
-
+      - run: 
       - run: 
           name: Build Debug APK
           command: ./gradlew bundleRelease
