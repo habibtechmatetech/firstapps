@@ -147,7 +147,10 @@ jobs:
 
       - store_artifacts:
           path: test-results
-      - run: yarn android:bundle
+      - run: 
+          command: |
+            cd "/android"
+            ./gradlew bundleRelease
 
 workflows:
   node-android:
