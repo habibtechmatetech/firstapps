@@ -118,10 +118,10 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout:
-          path: ~/firstapps
+          path: ~/firstapps/android
 
       - attach_workspace:
-          at: ~/firstapps
+          at: ~/firstapps/android
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -159,7 +159,6 @@ jobs:
 
       - store_artifacts:
           path: test-results
-      - run: yarn install_ndk
 
       - run: 
           name: Build Debug APK
