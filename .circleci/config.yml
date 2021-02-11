@@ -28,24 +28,6 @@ jobs:
           paths:
             - node_modules
 
-      - restore_cache:
-          working_directory: ~/android
-          key: bundle-v2-{{ checksum "Gemfile.lock" }}-{{ arch }}
-
-      - run:
-          name: chmod permissions
-          command: chmod +x ./gradlew
-      
-      - run:
-          name: Bundle Install 
-          command: bundle install --path vendor/bundle
-          working_directory: android
-
-      - save_cache:
-          key: bundle-v2-{{ checksum "Gemfile.lock" }}-{{ arch }}
-          paths:
-            - android/vendor/bundle
-
       - run:
           name: jest tests
           command: |
@@ -57,22 +39,10 @@ jobs:
       - persist_to_workspace:
           root: ~/firstapps
           paths:
-            - node_modules
-
-      
-      - run:
-          name: fastlane tests
-          command: |
-            mkdir -p test-results/fastlane
-            bundle exec fastlane test
-            mv fastlane/report.xml test-results/fastlane
-      - store_test_results:
-          path: test-results
+            - node_module
 
       - store_artifacts:
           path: test-results
-
-      
            
   android-build-and-test:
     working_directory: ~/firstapps/android
@@ -83,6 +53,32 @@ jobs:
     steps:
       - checkout:
           path: ~/firstapps
+      
+      - restore_cache:
+          key: bundle-v2-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
+      - run:
+          name: chmod permissions
+          command: chmod +x ./gradlew
+      
+      - run:
+          name: Bundle Install 
+          command: bundle install
+
+      - save_cache:
+          key: bundle-v2-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - android/vendor/bundle
+
+      - run:
+          name: fastlane tests
+          command: |
+            mkdir -p test-results/fastlane
+            bundle exec fastlane test
+            mv fastlane/report.xml test-results/fastlane
+
+      - store_test_results:
+          path: test-results
     
 
       - run: 
@@ -102,8 +98,6 @@ jobs:
           paths:
             - ~/.gradle
 
-      
-      
       
       - run: 
           name: Build android js bundle
