@@ -41,9 +41,9 @@ jobs:
           working_directory: android
 
       - save_cache:
-    key: bundle-v1-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
-    paths:
-      - android/vendor/bundle
+          key: bundle-v1-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
+          paths:
+            - android/vendor/bundle
 
       - run:
           name: jest tests
