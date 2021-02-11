@@ -155,13 +155,12 @@ jobs:
           path: app/build/reports
           destination: reports
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-          path: app/build/test-results
+          path: app/build/reports
       
       - run:
           name: Build debug APK and release APK
           command: |
-            ./gradlew :app:assembleDebug
-            ./gradlew :app:assembleDebugAndroidTest
+            ./gradlew :app:bundleRelease
       
       
 

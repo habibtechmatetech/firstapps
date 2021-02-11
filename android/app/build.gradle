@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 //...
 //apply the App Distribution Gradle plugin
-apply plugin: 'com.google.firebase.appdistribution'
+//apply plugin: 'com.google.firebase.appdistribution'
 // ...
 
 
