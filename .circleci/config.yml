@@ -56,12 +56,13 @@ jobs:
       - run:
           name: chmod permissions
           command: chmod +x ./gradlew
-          
+
       - run: gem list bundler
+      - run: bundle update --bundler
       
       - run:
           name: Bundle Install 
-          command: bundle install -v 2.1.4
+          command: bundle install
 
       - save_cache:
           key: bundle-v2-{{ checksum "Gemfile.lock" }}-{{ arch }}
