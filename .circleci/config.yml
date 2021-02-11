@@ -43,7 +43,7 @@ jobs:
   android-build-and-test:
     working_directory: ~/firstapps/android
     docker:
-      - image: circleci/android:api-26-node8-alpha
+      - image: circleci/android:api-29-node
     environment:
       _JAVA_OPTIONS: "-Xmx1500m"
     steps:
@@ -58,7 +58,6 @@ jobs:
           command: chmod +x ./gradlew
 
       - run: gem list bundler
-      - run: bundle update --bundler
       
       - run:
           name: Bundle Install 
