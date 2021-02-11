@@ -3,7 +3,9 @@ jobs:
   node:
     working_directory: ~/firstapps
     docker:
-      - image: cimg/node:12.16
+      - image: circleci/android:api-26-node8-alpha
+    environment:
+      _JAVA_OPTIONS: "-Xmx1500m"
 
     steps:
       - checkout
@@ -26,6 +28,23 @@ jobs:
           paths:
             - node_modules
 
+      - restore_cache:
+          key: bundle-v1-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
+
+      - run:
+          name: chmod permissions
+          command: chmod +x ./gradlew
+      
+      - run:
+          name: Bundle Install 
+          command: bundle install --path vendor/bundle
+          working_directory: android
+
+      - save_cache:
+    key: bundle-v1-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
+    paths:
+      - android/vendor/bundle
+
       - run:
           name: jest tests
           command: |
@@ -39,115 +58,6 @@ jobs:
           paths:
             - node_modules
 
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
-
- # macos-build-and-test:
-  #  working_directory: ~/firstapps
-   # macos:
-    #  xcode: 11.3.0
-    #environment:
-     # FL_OUTPUT_DIR: output
-      #FASTLANE_LANE: test
-
-    #steps:
-     # - checkout
-      #- restore_cache:
-       #   key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      #- restore_cache:
-       #   key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-
-      #- run: yarn install
-
-      #- save_cache:
-       #   key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-        #  paths:
-         #   - ~/.cache/yarn
-
-      #- save_cache:
-       #   key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-        #  paths:
-         #   - node_modules
-
-      #- restore_cache:
-       #   key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-
-      #Pods directory is ignored to match default RN setup, but can also check them into source control
-      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-      #- restore_cache:
-       #   key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-
-      #- run: 
-       #   command: pod install
-        #  working_directory: ios
-
-      #- run: 
-       #   command: bundle install
-        #  working_directory: ios
-
-      #- save_cache:
-       #   key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-        #  paths:
-         #   - vendor/bundle
-
-      #- save_cache:
-       #   key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-        #  paths:
-         #   - ios/Pods
-
-      #- run:
-       #   name: Fastlane
-        #  command: bundle exec fastlane $FASTLANE_LANE
-         # working_directory: ios
-
-      #- store_artifacts:
-       #   path: output
-          
-      #- store_test_results:
-       #   path: output/scan
-            
-  android-build-and-test:
-    working_directory: ~/firstapps/android
-    docker:
-      - image: circleci/android:api-29-node
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout:
-          path: ~/firstapps
-      - run: pwd
-
-      - attach_workspace:
-          at: ~/firstapps
-
-      - restore_cache:
-          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
-      - restore_cache:
-          key: jars-{{ checksum “build.gradle” }}-{{ checksum “app/build.gradle” }}
-      - run:
-          name: chmod permissions
-          command: chmod +x ./gradlew
-      
-
-      - run: bundle install
-
-      - save_cache:
-          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
-          paths:
-            - vendor/bundle
-      
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       
       - run:
           name: fastlane tests
@@ -160,9 +70,56 @@ jobs:
 
       - store_artifacts:
           path: test-results
+
+      
+           
+  android-build-and-test:
+    working_directory: ~/firstapps/android
+    docker:
+      - image: circleci/android:api-26-node8-alpha
+    environment:
+      _JAVA_OPTIONS: "-Xmx1500m"
+    steps:
+      - checkout:
+          path: ~/firstapps
+    
+
+      - run: 
+          name: Check MD5 on files
+          command: |
+            md5sum android/build.gradle
+            md5sum android/app/build.gradle            
+            cat android/app/build.gradle | sed -n -e '/dependencies/,$p' > android.app.build.gradle.deps
+      - restore_cache:
+          key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
+          working_directory: android
+      - save_cache:
+          key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
+          paths:
+            - ~/.gradle
+
+      
+      
+      
+      - run: 
+          name: Build android js bundle
+          working_directory: android
+          command: |
+            ./gradlew bundleReleaseJsAndAssests
+      - run: 
+          name: build Android APK
+          working_directory: android
+          command: |
+            ./gradlew assembleRelease -x bundleReleaseJsAndAssests
   
-          name: Build Debug APK
-          command: ./gradlew bundleRelease
+         # name: Build Debug APK
+          #command: |
+           #  mkdir -p apk/android
+            # bundle exec fastlane test
+             #./gradlew bundleRelease
       
 
 workflows:
