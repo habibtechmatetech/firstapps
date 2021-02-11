@@ -6,7 +6,8 @@ jobs:
       - image: cimg/node:12.16
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/firstapps
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -110,7 +111,7 @@ jobs:
       #- store_test_results:
        #   path: output/scan
             
-  build:
+  android-build-and-test:
     working_directory: ~/firstapps/android
     docker:
       - image: circleci/android:api-30-alpha
@@ -118,7 +119,11 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout:
-          
+          path: ~/firstapps
+      - run: pwd
+
+      - attach_workspace:
+          at: ~/firstapps
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -132,6 +137,7 @@ jobs:
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
+      
 
       - save_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
@@ -141,7 +147,7 @@ jobs:
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           paths:
             - ~/.gradle
-
+      
       - run:
           name: Run Tests
           command: ./gradlew lint test
@@ -156,14 +162,16 @@ jobs:
           command: |
             ./gradlew :app:assembleDebug
             ./gradlew :app:assembleDebugAndroidTest
+      
+      
 
       
-      #- run:
-       #   name: fastlane tests
-        #  command: |
-         #   mkdir -p test-results/fastlane
-          #  bundle exec fastlane test
-           # mv fastlane/report.xml test-results/fastlane
+     # - run:
+      #    name: fastlane tests
+       #   command: |
+        #    mkdir -p test-results/fastlane
+         #   bundle exec fastlane test
+          #  mv fastlane/report.xml test-results/fastlane
 
       #- store_test_results:
        #   path: test-results
@@ -171,14 +179,14 @@ jobs:
       #- store_artifacts:
        #   path: test-results
   
-  #        name: Build Debug APK
-   #       command: yarn android:bundle
+        #  name: Build Debug APK
+        #  command: yarn android:bundle
       
 
 workflows:
   node-android:
     jobs:
       - node
-      - build:
+      - android-build-and-test:
           requires:
             - node
