@@ -27,7 +27,8 @@ platform :android do
     )
     firebase_app_distribution(
       app: "1:139719722795:android:30a6217b4724daec04676e",
-      groups: "firstapps"
+      testers: "muhammad@apollo.inc, falak@apollo.inc"
+      
     )
     
   end
