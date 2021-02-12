@@ -16,10 +16,6 @@
 default_platform(:android)
 
 platform :android do
-  before_all do
-    setup_circle_ci
-  
-  end
   lane :android do
     gradle(
       task: 'assemble',

@@ -151,6 +151,7 @@ jobs:
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           paths:
             - ~/.gradle
+      - run: fastlane action gradle
       
       - run:
           name: Run Tests
