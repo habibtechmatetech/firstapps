@@ -117,7 +117,7 @@ jobs:
       - image: circleci/android:api-29-node
     environment:
       FL_OUTPUT_DIR: output
-      FASTLANE_LANE: test
+      FIREBASE_TOKEN: 1//03I-O6OANNvQRCgYIARAAGAMSNwF-L9Ir4HcABKP_48-u-8C6QT6V7fk6Mos9gX6k6nmRxG72dMMVbnrz0qZLIpNH9zPwW6JrNlk
       FAST_PARAMETER: android
     steps:
       - checkout:
@@ -169,7 +169,7 @@ jobs:
       #- run: bundle exec fastlane android 
       - run:
           name: Build debug APK and release APK1
-          command: bundle exec fastlane android $FAST_PARAMETER
+          command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_TOKEN
 
       
      # - run:
