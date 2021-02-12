@@ -118,7 +118,7 @@ jobs:
     environment:
       FL_OUTPUT_DIR: output
       FASTLANE_LANE: test
-      FAST_PARAMETER: parameter1: "android"
+      FAST_PARAMETER: android
     steps:
       - checkout:
           path: ~/firstapps
@@ -165,10 +165,10 @@ jobs:
           command: curl -sL firebase.tools | bash
       - run: fastlane add_plugin firebase_app_distribution
 
-      - run: bundle exec fastlane android $FAST_PARAMETER
-      #- run:
-       #   name: Build debug APK and release APK1
-        #  command: bundle exec fastlane $FASTLANE_LANE
+      #- run: bundle exec fastlane android 
+      - run:
+          name: Build debug APK and release APK1
+          command: bundle exec fastlane android $FAST_PARAMETER
 
       
      # - run:
