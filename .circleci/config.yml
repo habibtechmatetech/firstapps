@@ -166,7 +166,7 @@ jobs:
 
       - run: bundle exec fastlane android parameter1:"android"
       #- run:
-       #   name: Build debug APK and release APK
+       #   name: Build debug APK and release APK1
         #  command: bundle exec fastlane $FASTLANE_LANE
 
       
