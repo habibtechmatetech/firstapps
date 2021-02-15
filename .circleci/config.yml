@@ -178,6 +178,7 @@ jobs:
       - run:
           name: Install Firebase
           command: curl -sL firebase.tools | bash
+      - run: yarn start
 
       - run: fastlane add_plugin firebase_app_distribution
 
