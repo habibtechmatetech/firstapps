@@ -143,7 +143,7 @@ jobs:
           name: chmod permissions
           command: chmod +x ./gradlew
       
-      #- run: bundle install
+      - run: bundle install
       
       #- run:
          # name: Download Dependencies
@@ -158,19 +158,24 @@ jobs:
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           paths:
             - ~/.gradle
+
       - run: fastlane action gradle
       
       - run:
           name: Run Tests
           command: ./gradlew lint test
+          
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: app/build/reports
           destination: reports
+
       - store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: app/build/reports
+
       - run:
           name: Install Firebase
           command: curl -sL firebase.tools | bash
+
       - run: fastlane add_plugin firebase_app_distribution
 
       #- run: bundle exec fastlane android 
@@ -179,18 +184,18 @@ jobs:
           command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_TOKEN
 
       
-     # - run:
-      #    name: fastlane tests
-       #   command: |
-        #    mkdir -p test-results/fastlane
-         #   bundle exec fastlane test
-          #  mv fastlane/report.xml test-results/fastlane
+      - run:
+          name: fastlane tests
+          command: |
+            mkdir -p test-results/fastlane
+            bundle exec fastlane test
+            mv fastlane/report.xml test-results/fastlane
 
-      #- store_test_results:
-       #   path: test-results
+      - store_test_results:
+          path: test-results
 
-      #- store_artifacts:
-       #   path: test-results
+      - store_artifacts:
+          path: test-results
   
         #  name: Build Debug APK
         #  command: yarn android:bundle
