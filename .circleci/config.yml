@@ -125,7 +125,8 @@ jobs:
       FIREBASE_TOKEN: $FIREBASE_DEPLOY_TOKEN 
       #1//03I-O6OANNvQRCgYIARAAGAMSNwF-L9Ir4HcABKP_48-u-8C6QT6V7fk6Mos9gX6k6nmRxG72dMMVbnrz0qZLIpNH9zPwW6JrNlk
       FAST_PARAMETER: android
-      ANDROID_NDK_HOME: /home/circleci/firstapps/android-ndk-r10d 
+      #ANDROID_NDK_HOME: /home/circleci/firstapps/android-ndk-r16b
+      JVM_OPTS: -Xmx3200m
       
     steps:
       - checkout:
@@ -158,13 +159,16 @@ jobs:
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           paths:
             - ~/.gradle
+      - run:
+          name: Install Android NDK
+          command: source ./script/circleCiEnvironmentSetup.sh && getAndroidNDK
 
       - run: fastlane action gradle
       
       - run:
           name: Run Tests
           command: ./gradlew lint test
-          
+
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: app/build/reports
           destination: reports
