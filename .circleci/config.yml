@@ -30,9 +30,6 @@ jobs:
       - run:
           name: Eslint
           command: yarn run eslint
-      - run:
-          name: Flow
-          command: yarn run flow
 
       #Jest Test for android 1
       - run:
