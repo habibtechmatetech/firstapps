@@ -26,14 +26,23 @@ jobs:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
+      #Test Eslint and flow 
+      - run:
+          name: Eslint
+          command: yarn run validate:eslint
+      - run:
+          name: Flow
+          command: yarn run validate:flow
 
+      #Jest Test for android
       - run:
           name: jest tests
           command: |
             mkdir -p test-results/jest
             yarn run test
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+            mv jest/junit.xml test-results/jest
+          #environment:
+            #JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
           root: ~/firstapps
@@ -117,12 +126,14 @@ jobs:
       - image: circleci/android:api-29-node
     environment:
       FL_OUTPUT_DIR: output
-      FIREBASE_TOKEN: 1//03I-O6OANNvQRCgYIARAAGAMSNwF-L9Ir4HcABKP_48-u-8C6QT6V7fk6Mos9gX6k6nmRxG72dMMVbnrz0qZLIpNH9zPwW6JrNlk
+      FIREBASE_TOKEN: $FIREBASE_DEPLOY_TOKEN 
+      #1//03I-O6OANNvQRCgYIARAAGAMSNwF-L9Ir4HcABKP_48-u-8C6QT6V7fk6Mos9gX6k6nmRxG72dMMVbnrz0qZLIpNH9zPwW6JrNlk
       FAST_PARAMETER: android
+      ANDROID_NDK_HOME: /home/circleci/firstapps/android-ndk-r10d 
+      
     steps:
       - checkout:
           path: ~/firstapps
-      - run: pwd
 
       - attach_workspace:
           at: ~/firstapps
@@ -136,11 +147,11 @@ jobs:
           name: chmod permissions
           command: chmod +x ./gradlew
       
-      - run: bundle install
+      #- run: bundle install
       
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
+      #- run:
+         # name: Download Dependencies
+         # command: ./gradlew androidDependencies
       
 
       - save_cache:
