@@ -29,12 +29,12 @@ jobs:
       #Test Eslint and flow 
       - run:
           name: Eslint
-          command: yarn run validate:eslint
+          command: yarn run eslint
       - run:
           name: Flow
-          command: yarn run validate:flow
+          command: yarn run flow
 
-      #Jest Test for android
+      #Jest Test for android 1
       - run:
           name: jest tests
           command: |
