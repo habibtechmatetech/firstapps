@@ -37,7 +37,6 @@ jobs:
           command: |
             mkdir -p test-results/jest
             yarn run test
-            mv jest/junit.xml test-results/jest
           #environment:
             #JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
