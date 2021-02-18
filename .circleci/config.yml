@@ -115,12 +115,16 @@ jobs:
   android-build-and-test:
     working_directory: ~/firstapps/android
     docker:
-      - image: circleci/android:api-29-node
+      - image: circleci/android:api-27-ndk  
+      #- image: circleci/android:api-30-ndk
+      # - image: circleci/android:api-29-node
     environment:
       FL_OUTPUT_DIR: output
       #FIREBASE_DEPLOY_TOKEN: $FIREBASE_DEPLOY_TOKEN
       FAST_PARAMETER: android
       JVM_OPTS: -Xmx3200m
+      #ENV PATH: /home/circleci/.rubies/ruby-2.6.1/bin:/home/circleci/.local/bin:/home/circleci/bin:/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bi
+      android_home: /opt/android/sdk android_ndk_home=/opt/android/android-ndk-r20 cmdline_tools=https://dl.google.com/android/repository/commandlinetools-linux-6609375_latest.zip ndk_version=android-ndk-r20 /bin/sh -c wget -O /tmp/${ndk_version}.zip -t 5 "https://dl.google.com/android/repository/${ndk_version}-linux-x86_64.zip" &&     sudo unzip -q /tmp/${ndk_version}.zip -d /opt/android &&     rm /tmp/${ndk_version}.zip &&     sudo chown -R circleci:circleci ${android_ndk_home}
       
     steps:
       - checkout:
@@ -153,15 +157,9 @@ jobs:
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
           paths:
             - ~/.gradle
+      - run: yarn android_home
 
-      - run:
-          command: |
-            yes | sdkmanager --licenses
-            yes | sdkmanager --update
-            
-      - run: 
-          name: Accept Android Licenses
-          shell: /bin/bash -e
+      
       
 
       - run: fastlane action gradle
