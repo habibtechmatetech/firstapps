@@ -162,9 +162,9 @@ jobs:
       #- run: fastlane action gradle
        #- run: yarn android
       
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
+      #- run:
+          #name: Run Tests
+          #command: ./gradlew lint test
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: app/build/reports
