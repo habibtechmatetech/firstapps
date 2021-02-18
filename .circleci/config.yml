@@ -155,8 +155,8 @@ jobs:
             - ~/.gradle
       
 
-      #- run: fastlane action gradle
-      - run: yarn android
+      - run: fastlane action gradle
+      #- run: yarn android
       
       - run:
           name: Run Tests
