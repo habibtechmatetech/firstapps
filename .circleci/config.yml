@@ -154,7 +154,6 @@ jobs:
           paths:
             - ~/.gradle
 
-    steps:
       - run:
           command: |
             yes | sdkmanager --licenses
