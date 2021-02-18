@@ -158,6 +158,7 @@ jobs:
           command: |
             yes | sdkmanager --licenses
             yes | sdkmanager --update
+            
       - run: 
           name: Accept Android Licenses
           shell: /bin/bash -e
