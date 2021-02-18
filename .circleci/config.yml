@@ -117,7 +117,7 @@ jobs:
        #   path: output/scan
             
   android-build-and-test:
-    working_directory: ~/firstapps/android
+    working_directory: ~/firstapps/
     docker:
       - image: circleci/android:api-29-ndk
       #- image: circleci/android:api-29-node
