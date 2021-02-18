@@ -144,9 +144,9 @@ jobs:
       
       - run: bundle install
       
-      - run:
-          name: Download Dependencies
-          command: ./gradlew androidDependencies
+      #- run:
+         # name: Download Dependencies
+         # command: ./gradlew androidDependencies
       
 
       - save_cache:
