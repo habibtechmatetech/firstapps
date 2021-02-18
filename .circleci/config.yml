@@ -156,7 +156,7 @@ jobs:
       
 
       #- run: fastlane action gradle
-       - run: yarn android
+      - run: yarn android
       
       - run:
           name: Run Tests
