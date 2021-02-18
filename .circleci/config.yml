@@ -26,10 +26,6 @@ jobs:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
-      #Test Eslint and flow 
-      - run:
-          name: Eslint
-          command: yarn run eslint
 
       #Jest Test for android 1
       - run:
@@ -37,8 +33,8 @@ jobs:
           command: |
             mkdir -p test-results/jest
             yarn run test
-          #environment:
-            #JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+          environment:
+            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
           root: ~/firstapps
@@ -122,11 +118,8 @@ jobs:
       - image: circleci/android:api-29-node
     environment:
       FL_OUTPUT_DIR: output
-      FIREBASE_TOKEN: $FIREBASE_DEPLOY_TOKEN 
-      #1//03I-O6OANNvQRCgYIARAAGAMSNwF-L9Ir4HcABKP_48-u-8C6QT6V7fk6Mos9gX6k6nmRxG72dMMVbnrz0qZLIpNH9zPwW6JrNlk
+      FIREBASE_DEPLOY_TOKEN: $FIREBASE_DEPLOY_TOKEN
       FAST_PARAMETER: android
-      #ANDROID_NDK_HOME: /home/circleci/firstapps/android-ndk-r16b
-      ANDROID_NDK_PATH: /home/circleci/firstapps/android-ndk-r16b
       JVM_OPTS: -Xmx3200m
       
     steps:
@@ -162,7 +155,8 @@ jobs:
             - ~/.gradle
       
 
-      - run: fastlane action gradle
+      #- run: fastlane action gradle
+       - run: yarn android
       
       - run:
           name: Run Tests
@@ -178,14 +172,13 @@ jobs:
       - run:
           name: Install Firebase
           command: curl -sL firebase.tools | bash
-      - run: yarn start
 
       - run: fastlane add_plugin firebase_app_distribution
 
       #- run: bundle exec fastlane android 
       - run:
           name: Build debug APK and release APK1
-          command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_TOKEN
+          command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_DEPLOY_TOKEN
 
       
       - run:
