@@ -134,9 +134,11 @@ jobs:
           at: ~/firstapps
 
       - restore_cache:
+          working_directory: ~/firstapps/android
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
 
       - restore_cache:
+          working_directory: ~/firstapps/android
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: chmod permissions
