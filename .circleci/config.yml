@@ -124,7 +124,8 @@ jobs:
     environment:
       FL_OUTPUT_DIR: output
       FAST_PARAMETER: android
-      
+      FIREBASE_DEPLOY: 1//03I-O6OANNvQRCgYIARAAGAMSNwF-L9Ir4HcABKP_48-u-8C6QT6V7fk6Mos9gX6k6nmRxG72dMMVbnrz0qZLIpNH9zPwW6JrNlk
+
       #JVM_OPTS: -Xmx3200m
       
     steps:
