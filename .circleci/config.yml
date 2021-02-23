@@ -117,13 +117,14 @@ jobs:
        #   path: output/scan
             
   android-build-and-test:
-    working_directory: ~/firstapps/
+    working_directory: ~/firstapps/android
     docker:
-      - image: circleci/android:api-29-ndk
-      #- image: circleci/android:api-29-node
+      #- image: circleci/android:api-29-ndk
+      - image: circleci/android:api-29-node
     environment:
       FL_OUTPUT_DIR: output
       FAST_PARAMETER: android
+      
       #JVM_OPTS: -Xmx3200m
       
     steps:
@@ -134,11 +135,9 @@ jobs:
           at: ~/firstapps
 
       - restore_cache:
-          working_directory: ~/firstapps/android
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
 
       - restore_cache:
-          working_directory: ~/firstapps/android
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: chmod permissions
@@ -146,9 +145,9 @@ jobs:
       
       - run: bundle install
       
-      #- run:
-         # name: Download Dependencies
-         # command: ./gradlew androidDependencies
+      - run:
+          name: Download Dependencies
+          command: ./gradlew androidDependencies
       
 
       - save_cache:
@@ -164,9 +163,9 @@ jobs:
       #- run: fastlane action gradle
        #- run: yarn android
       
-      #- run:
-          #name: Run Tests
-          #command: ./gradlew lint test
+      - run:
+          name: Run Tests
+          command: ./gradlew lint test
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
           path: app/build/reports
@@ -180,11 +179,10 @@ jobs:
           command: curl -sL firebase.tools | bash
 
       - run: fastlane add_plugin firebase_app_distribution
-
-      #- run: bundle exec fastlane android 
+ 
       - run:
           name: Build debug APK and release APK1
-          command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_DEPLOY_TOKEN
+          command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_DEPLOY
 
       
       - run:

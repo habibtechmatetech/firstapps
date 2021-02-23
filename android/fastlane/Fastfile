@@ -26,17 +26,5 @@ platform :android do
       testers: "muhammad@apollo.inc, falak@apollo.inc"  
     ) 
   end
-  desc "Submitting to alpha"
-  lane :alpha do
-    gradle(task: "clean assembbleRelease")
-    upload_to_play_store(track: 'alpha')
-  end
-  desc "promote alpha build to beta"
-  lane :deploy do
-    upload_to_play_store(track: 'alpha', track_promote_to: 'beta')
-  end
-  
-    
-
   
 end
