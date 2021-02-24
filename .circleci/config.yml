@@ -127,7 +127,8 @@ jobs:
       FL_OUTPUT_DIR: output
       FAST_PARAMETER: android
       FASTLANE_LANE: test
-      FIREBASE_DEPLOY: 1//03zarV0CwZre-CgYIARAAGAMSNwF-L9IrK6-djwePrFV-Tke_LTXLG54YJrKQE_fZUtGzb71MD9pps4y6trrfPH83l4o28d_uW6E
+      #FIREBASE_DEPLOY: 1//03zarV0CwZre-CgYIARAAGAMSNwF-L9IrK6-djwePrFV-Tke_LTXLG54YJrKQE_fZUtGzb71MD9pps4y6trrfPH83l4o28d_uW6E
+      FIREBASE_DEPLOY: 1//03hdclu-WsZuICgYIARAAGAMSNwF-L9IrYcSVLfiWmaDRb0kBtW5nTbFjkLUW48PzNFvcK6190apIn8frcrVuYoveVJ3cK1w3xwY
       #JVM_OPTS: -Xmx3200m 
     steps:
       - checkout:
