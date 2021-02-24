@@ -15,7 +15,9 @@ jobs:
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
-      - run: yarn install
+      - run:
+          name: Yarn Install For React-Native
+          command: yarn install
 
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -28,12 +30,12 @@ jobs:
             - node_modules
       #Test Eslint and flow 
       - run:
-          name: Eslint
+          name: Eslint Test
           command: yarn run eslint
 
       #Jest Test for android 1
       - run:
-          name: jest tests
+          name: Jest Tests
           command: |
             mkdir -p test-results/jest
             yarn run test
@@ -51,86 +53,82 @@ jobs:
       - store_artifacts:
           path: test-results
 
-  macos-build-and-test:
-    working_directory: ~/firstapps
-    macos:
-      xcode: 11.3.0
-    environment:
-      FL_OUTPUT_DIR: output
-      FASTLANE_LANE: test
-      FIREBASE_TOKEN: 1//037Oa2-I9YUHBCgYIARAAGAMSNwF-L9IrH0fad9cGaaTCeCtuGq2aoxzaJkirk8wQ4-_WUVGSlsc7bSldRkMI9oCcE0Qa2v-i2uw
+ # macos-build-and-test:
+  #  working_directory: ~/firstapps
+   # macos:
+    #  xcode: 11.3.0
+    #environment:
+     # FL_OUTPUT_DIR: output
+      #FASTLANE_LANE: test
+      #FIREBASE_TOKEN: 1//037Oa2-I9YUHBCgYIARAAGAMSNwF-L9IrH0fad9cGaaTCeCtuGq2aoxzaJkirk8wQ4-_WUVGSlsc7bSldRkMI9oCcE0Qa2v-i2uw
 
-    steps:
-      - checkout
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+    #steps:
+     # - checkout
+      #- restore_cache:
+       #   key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+      #- restore_cache:
+       #   key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
-      - run: yarn install
+      #- run: yarn install
 
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
+      #- save_cache:
+       #   key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
+        #  paths:
+         #   - ~/.cache/yarn
 
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
+      #- save_cache:
+       #   key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+        #  paths:
+         #   - node_modules
 
-      - restore_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+      #- restore_cache:
+       #   key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
 
       #Pods directory is ignored to match default RN setup, but can also check them into source control
       #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-      - restore_cache:
-          key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+      #- restore_cache:
+       #   key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
 
-      - run: 
-          command: pod install
-          working_directory: ios
+      #- run: 
+       #   command: pod install
+        #  working_directory: ios
 
-      - run: 
-          command: bundle install
-          working_directory: ios
+      #- run: 
+       #   command: bundle install
+        #  working_directory: ios
 
-      - save_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-          paths:
-            - vendor/bundle
+      #- save_cache:
+       #   key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
+        #  paths:
+         #   - vendor/bundle
 
-      - save_cache:
-          key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-          paths:
-            - ios/Pods
+      #- save_cache:
+       #   key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
+        #  paths:
+          #  - ios/Pods
 
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane $FASTLANE_LANE
-          working_directory: ios
+      #- run:
+       #   name: Fastlane
+        #  command: bundle exec fastlane $FASTLANE_LANE
+         # working_directory: ios
 
-      - store_artifacts:
-          path: output
+      #- store_artifacts:
+       #   path: output
           
-      - store_test_results:
-          path: output/scan
+      #- store_test_results:
+       #   path: output/scan
             
   android-build-and-test:
     working_directory: ~/firstapps/android
     docker:
-      #- image: circleci/android:api-29-ndk
       - image: circleci/android:api-29-node
     environment:
       FL_OUTPUT_DIR: output
       FAST_PARAMETER: android
       FASTLANE_LANE: test
-      
-      
-
-      #JVM_OPTS: -Xmx3200m
-      
+      FIREBASE_DEPLOY: 1//03zarV0CwZre-CgYIARAAGAMSNwF-L9IrK6-djwePrFV-Tke_LTXLG54YJrKQE_fZUtGzb71MD9pps4y6trrfPH83l4o28d_uW6E
+      #JVM_OPTS: -Xmx3200m 
     steps:
       - checkout:
           path: ~/firstapps
@@ -144,13 +142,15 @@ jobs:
       - restore_cache:
           key: android-jars-v1-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: chmod permissions
+          name: Gradle Execute Permission
           command: chmod +x ./gradlew
       
-      - run: bundle install
+      - run:
+          name: Bundle Install For React-Native
+          command: bundle install
       
       - run:
-          name: Download Dependencies
+          name: Download Gradle Dependencies
           command: ./gradlew androidDependencies
       
 
@@ -168,7 +168,7 @@ jobs:
        #- run: yarn android
       
       - run:
-          name: Run Tests
+          name: Run Gradle Tests For Android
           command: ./gradlew lint test
 
       - store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/ 
@@ -179,19 +179,21 @@ jobs:
           path: app/build/reports
 
       - run:
-          name: Install Firebase
+          name: Install Firebase Tools
           command: curl -sL firebase.tools | bash
 
-      - run: fastlane add_plugin firebase_app_distribution
+      - run:
+          name: Add Fastlane Firebase App Distribution Plug-In
+          command: fastlane add_plugin firebase_app_distribution
  
       - run:
-          name: Build debug APK and release APK1
+          name: Build Debug APK and Release APK To Firebase App Distribution
           command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_TOKEN
 
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane $FASTLANE_LANE $FIREBASE_TOKEN
-          working_directory: ios 
+     # - run:
+      #    name: Fastlane
+       #   command: bundle exec fastlane $FASTLANE_LANE $FIREBASE_TOKEN
+        #  working_directory: ios 
 
       
       #- run:
@@ -218,6 +220,6 @@ workflows:
       - android-build-and-test:
           requires:
             - node
-      - macos-build-and-test:
-          requires:
-            - node
+     # - macos-build-and-test:
+      #    requires:
+       #     - node
