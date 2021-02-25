@@ -148,6 +148,8 @@ jobs:
       - run:
           name: Bundle Install For React-Native
           command: bundle install
+          
+      - run: bundle update fastlane
       
       - run:
           name: Download Gradle Dependencies
