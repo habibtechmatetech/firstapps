@@ -13,7 +13,6 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-default_platform(android)
 
 platform :android do
   lane :android do
@@ -28,4 +27,4 @@ platform :android do
   end
   
 end
-end
+
