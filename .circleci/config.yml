@@ -181,6 +181,19 @@ jobs:
        #   path: app/build/reports
 
       - run:
+          name: fastlane tests
+          command: |
+            mkdir -p test-results/fastlane
+            bundle exec fastlane test
+            mv fastlane/report.xml test-results/fastlane
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results
+
+      - run:
           name: Install Firebase Tools
           command: curl -sL firebase.tools | bash
 
@@ -191,28 +204,11 @@ jobs:
       - run:
           name: Build Debug APK and Release APK To Firebase App Distribution
           command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_TOKEN
-
-     # - run:
-      #    name: Fastlane
-       #   command: bundle exec fastlane $FASTLANE_LANE $FIREBASE_TOKEN
-        #  working_directory: ios 
+ 
 
       
-      #- run:
-       #   name: fastlane tests
-        #  command: |
-         #   mkdir -p test-results/fastlane
-          #  bundle exec fastlane test
-           # mv fastlane/report.xml test-results/fastlane
+      
 
-      #- store_test_results:
-       #   path: test-results
-
-      #- store_artifacts:
-       #   path: test-results
-  
-        #  name: Build Debug APK
-        #  command: yarn android:bundle
       
 
 workflows:
