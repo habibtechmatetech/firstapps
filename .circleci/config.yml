@@ -166,7 +166,7 @@ jobs:
             - ~/.gradle
       
 
-      #- run: fastlane action gradle
+      #- run: fastlane action gradleqaq
        #- run: yarn android
       
       - run:
