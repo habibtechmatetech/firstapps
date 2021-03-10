@@ -12,9 +12,9 @@
 
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
-export FIREBASE_TOKEN=1//03hdclu-WsZuICgYIARAAGAMSNwF-L9IrYcSVLfiWmaDRb0kBtW5nTbFjkLUW48PzNFvcK6190apIn8frcrVuYoveVJ3cK1w3xwY
 
-default_platform ():android)
+
+default_platform (:android)
 
 platform :android do
   lane :android do
@@ -24,7 +24,9 @@ platform :android do
     )
     firebase_app_distribution(
       app: "1:139719722795:android:30a6217b4724daec04676e",
-      testers: "muhammad@apollo.inc, falak@apollo.inc"  
+      testers: "muhammad@apollo.inc, falak@apollo.inc",
+      export FIREBASE_TOKEN=1//03hdclu-WsZuICgYIARAAGAMSNwF-L9IrYcSVLfiWmaDRb0kBtW5nTbFjkLUW48PzNFvcK6190apIn8frcrVuYoveVJ3cK1w3xwY
+
     ) 
   end
   
