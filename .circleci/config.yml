@@ -199,13 +199,8 @@ jobs:
 
       - run:
           name: Add Fastlane Firebase App Distribution Plug-In
-          command: fastlane add_plugin firebase_app_distribution
+          command: bundle exec fastlane add_plugin firebase_app_distribution
 
-      - run:
-          name: Run Firebase Login
-          command: fastlane run firebase_app_distribution_login $FIREBASE_TOKEN
-
- 
       - run:
           name: Build Debug APK and Release APK To Firebase App Distribution
           command: bundle exec fastlane android $FAST_PARAMETER $FIREBASE_TOKEN
