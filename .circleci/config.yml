@@ -180,18 +180,18 @@ jobs:
       #- store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
        #   path: app/build/reports
 
-      - run:
-          name: fastlane tests
-          command: |
-            mkdir -p test-results/fastlane
-            bundle exec fastlane $FASTLANE_LANE
-            mv fastlane/report.xml test-results/fastlane
+     # - run:
+      #    name: fastlane tests
+       #   command: |
+        #    mkdir -p test-results/fastlane
+         #   bundle exec fastlane $FASTLANE_LANE
+          #  mv fastlane/report.xml test-results/fastlane
 
-      - store_test_results:
-          path: test-results
+      #- store_test_results:
+       #   path: test-results 
 
-      - store_artifacts:
-          path: test-results
+      #- store_artifacts:
+       #   path: test-results
 
       - run:
           name: Install Firebase Tools
@@ -200,6 +200,11 @@ jobs:
       - run:
           name: Add Fastlane Firebase App Distribution Plug-In
           command: fastlane add_plugin firebase_app_distribution
+
+      -run:
+          name: Run Firebase Login
+          command: fastlane run firebase_app_distribution_login $FIREBASE_TOKEN
+
  
       - run:
           name: Build Debug APK and Release APK To Firebase App Distribution
