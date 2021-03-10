@@ -12,8 +12,9 @@
 
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
+export FIREBASE_TOKEN=1//03hdclu-WsZuICgYIARAAGAMSNwF-L9IrYcSVLfiWmaDRb0kBtW5nTbFjkLUW48PzNFvcK6190apIn8frcrVuYoveVJ3cK1w3xwY
 
-default_platform(:android)
+default_platform ():android)
 
 platform :android do
   lane :android do
